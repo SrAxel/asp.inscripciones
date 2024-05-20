@@ -15,6 +15,9 @@ probando.txt
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+#cambios remotos
+remote.txt
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
