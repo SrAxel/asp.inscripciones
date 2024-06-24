@@ -27,10 +27,11 @@ namespace Inscripciones.Controllers
 
         public async Task<IActionResult> IndexPorAnio(int? idanio = 1)
         {
-            ViewData["AniosCarreras"] = new SelectList(_context.AnioCarreras.Include(a => a.Carrera), "Id", "AñoYCarrera");
+            ViewData["AniosCarreras"] =  new SelectList(_context.AnioCarreras.Include(a => a.Carrera), "Id", "AñoYCarrera");
             ViewData["IdAnio"] = idanio;
-            var inscripcionesContext =  _context.Materias.Include(m => m.AnioCarrera).ThenInclude(a=> a.Carrera).Where(m=>m.AnioCarreraId.Equals(idanio));
-            return View(await inscripcionesContext.ToListAsync());
+            var materias = await _context.Materias.Include(m => m.AnioCarrera).ThenInclude(a=> a.Carrera).Where(m=>m.AnioCarreraId.Equals(idanio)).ToListAsync();
+            ViewData["IdCarrera"] = materias.FirstOrDefault()?.AnioCarrera.CarreraId ?? 0;
+            return View( materias);
         }
 
         // GET: Materias/Details/5

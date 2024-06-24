@@ -47,6 +47,11 @@ namespace Inscripciones.Controllers
         {
             return View();
         }
+        public IActionResult CreateConCarrera()
+        {
+            
+            return View();
+        }
 
         // POST: Carreras/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -63,6 +68,7 @@ namespace Inscripciones.Controllers
             }
             return View(carrera);
         }
+        
 
         // GET: Carreras/Edit/5
         public async Task<IActionResult> Edit(int? id)

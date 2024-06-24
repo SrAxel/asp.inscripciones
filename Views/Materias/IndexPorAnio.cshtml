@@ -1,19 +1,21 @@
 ﻿@model IEnumerable<Inscripciones.Models.Materia>
 
+
 @{
     ViewData["Title"] = "Index";
     int idanio = ViewBag.IdAnio;
+    int idcarrera = ViewBag.IdCarrera;
 }
 
-<h1>Mostrando seleccion</h1>
+<h1>Mostrando Materias del año seleccionado</h1>
 
 <p>
-    <a asp-action="CreateConAnio" asp-route-idanio="@idanio">Crear</a>
+    <a asp-action="CreateConAnio" asp-route-idanio="@idanio">Create New</a>
 </p>
 <form asp-controller="Materias" asp-action="IndexPorAnio" method="get">
     <div class="form-group">
         <label asp-for="@idanio" class="control-label"></label>
-        <select asp-for="@idanio" class="form-control" asp-items="ViewBag.AniosCarreras" onchange="this.form.submit()"></select>
+        <select asp-for="@idanio" disabled class="form-control" asp-items="ViewBag.AniosCarreras" onchange="this.form.submit()"></select>
     </div>
 </form>
 <table class="table">
@@ -35,14 +37,15 @@
                 @Html.DisplayFor(modelItem => item.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AnioCarrera.Nombre)
+                @Html.DisplayFor(modelItem => item.AnioCarrera.AñoYCarrera)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<a asp-controller="AnioCarreras" asp-action="IndexPorCarrera" asp-route-idcarrera="@idcarrera">Volver</a>

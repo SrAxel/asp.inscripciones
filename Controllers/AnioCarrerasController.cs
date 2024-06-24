@@ -25,6 +25,14 @@ namespace Inscripciones.Controllers
             return View(await inscripcionesContext.ToListAsync());
         }
 
+        public async Task<IActionResult> IndexPorCarrera(int? idcarrera = 1)
+        {
+            ViewData["Carreras"] = new SelectList(_context.carreras, "Id", "Nombre", idcarrera);
+            var inscripcionesContext = _context.AnioCarreras.Include(a => a.Carrera).Where(a => a.CarreraId.Equals(idcarrera));
+            ViewData["IdCarrera"] = idcarrera;
+
+            return View(await inscripcionesContext.ToListAsync());
+        }
         // GET: AnioCarreras/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -47,7 +55,14 @@ namespace Inscripciones.Controllers
         // GET: AnioCarreras/Create
         public IActionResult Create()
         {
-            ViewData["CarreraId"] = new SelectList(_context.carreras, "Id", "Id");
+            ViewData["Carreras"] = new SelectList(_context.carreras, "Id", "Nombre");
+            return View();
+        }
+
+        public IActionResult CreateConCarrera(int? idcarrera)
+        {
+            ViewData["Carreras"] = new SelectList(_context.carreras, "Id", "Nombre", idcarrera);
+            ViewData["IdCarrera"] = idcarrera;
             return View();
         }
 
@@ -64,7 +79,21 @@ namespace Inscripciones.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarreraId"] = new SelectList(_context.carreras, "Id", "Id", anioCarrera.CarreraId);
+            ViewData["Carreras"] = new SelectList(_context.carreras, "Id", "Id", anioCarrera.CarreraId);
+            return View(anioCarrera);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateConCarrera([Bind("Id,Nombre,CarreraId")] AnioCarrera anioCarrera)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(anioCarrera);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(IndexPorCarrera), new { idcarrera = anioCarrera.CarreraId });
+            }
+            ViewData["Carreras"] = new SelectList(_context.carreras, "Id", "Id", anioCarrera.CarreraId);
             return View(anioCarrera);
         }
 
@@ -81,7 +110,7 @@ namespace Inscripciones.Controllers
             {
                 return NotFound();
             }
-            ViewData["CarreraId"] = new SelectList(_context.carreras, "Id", "Id", anioCarrera.CarreraId);
+            ViewData["Carreras"] = new SelectList(_context.carreras, "Id", "Id", anioCarrera.CarreraId);
             return View(anioCarrera);
         }
 
@@ -117,7 +146,7 @@ namespace Inscripciones.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarreraId"] = new SelectList(_context.carreras, "Id", "Id", anioCarrera.CarreraId);
+            ViewData["Carreras"] = new SelectList(_context.carreras, "Id", "Id", anioCarrera.CarreraId);
             return View(anioCarrera);
         }
 

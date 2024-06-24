@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Inscripciones.Models.Inscripcion>
 
 @{
-    ViewData["Title"] = "Inscripciones";
+    ViewData["Title"] = "Index";
 }
 
-<h1>Inscripciones</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Crear</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -28,7 +28,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @item.Fecha.ToString("dd/MM/yyyy")
+                @Html.DisplayFor(modelItem => item.Fecha)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Alumno.ApellidoNombre)
@@ -37,9 +37,10 @@
                 @Html.DisplayFor(modelItem => item.Carrera.Nombre)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                <a asp-action="IndexPorInscripcion" asp-controller="DetalleInscripciones"  asp-route-idinscripcion="@item.Id">Inscripción Materias</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
